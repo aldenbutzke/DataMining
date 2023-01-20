@@ -1,0 +1,104 @@
+Application,LoanType,PropertyType,Purpose
+1,Conventional,Single-family,Purchase
+2,Conventional,Multi-family,Refinancing
+3,Federal Housing,Single-family,Purchase
+4,Conventional,Multi-family,Refinancing
+5,Conventional,Single-family,Purchase
+6,Federal Housing,Single-family,Refinancing
+7,Conventional,Single-family,Refinancing
+8,Federal Housing,Multi-family,Refinancing
+9,Conventional,Single-family,Refinancing
+10,Federal Housing,Single-family,Refinancing
+11,Federal Housing,Single-family,Refinancing
+12,Federal Housing,Single-family,Purchase
+13,Federal Housing,Multi-family,Refinancing
+14,Federal Housing,Multi-family,Purchase
+15,Conventional,Multi-family,Refinancing
+16,Conventional,Multi-family,Purchase
+17,Conventional,Single-family,Refinancing
+18,Conventional,Multi-family,Refinancing
+19,Federal Housing,Multi-family,Refinancing
+20,Conventional,Multi-family,Purchase
+21,Federal Housing,Multi-family,Purchase
+22,Conventional,Multi-family,Refinancing
+23,Federal Housing,Single-family,Purchase
+24,Conventional,Single-family,Refinancing
+25,Federal Housing,Multi-family,Refinancing
+26,Conventional,Single-family,Purchase
+27,Conventional,Single-family,Refinancing
+28,Conventional,Multi-family,Refinancing
+29,Conventional,Single-family,Purchase
+30,Federal Housing,Multi-family,Refinancing
+31,Conventional,Multi-family,Purchase
+32,Federal Housing,Single-family,Refinancing
+33,Federal Housing,Multi-family,Refinancing
+34,Federal Housing,Single-family,Refinancing
+35,Federal Housing,Multi-family,Purchase
+36,Federal Housing,Multi-family,Refinancing
+37,Conventional,Multi-family,Purchase
+38,Federal Housing,Single-family,Refinancing
+39,Federal Housing,Single-family,Refinancing
+40,Conventional,Single-family,Refinancing
+41,Conventional,Single-family,Refinancing
+42,Federal Housing,Multi-family,Purchase
+43,Conventional,Multi-family,Refinancing
+44,Federal Housing,Single-family,Purchase
+45,Federal Housing,Single-family,Purchase
+46,Conventional,Multi-family,Purchase
+47,Conventional,Single-family,Purchase
+48,Conventional,Single-family,Purchase
+49,Federal Housing,Single-family,Refinancing
+50,Federal Housing,Multi-family,Refinancing
+51,Federal Housing,Multi-family,Purchase
+52,Conventional,Multi-family,Refinancing
+53,Conventional,Multi-family,Refinancing
+54,Conventional,Single-family,Purchase
+55,Federal Housing,Multi-family,Refinancing
+56,Conventional,Single-family,Refinancing
+57,Conventional,Single-family,Refinancing
+58,Conventional,Multi-family,Refinancing
+59,Conventional,Multi-family,Purchase
+60,Federal Housing,Single-family,Refinancing
+61,Federal Housing,Single-family,Refinancing
+62,Conventional,Multi-family,Refinancing
+63,Conventional,Single-family,Refinancing
+64,Federal Housing,Multi-family,Purchase
+65,Conventional,Multi-family,Purchase
+66,Conventional,Single-family,Refinancing
+67,Federal Housing,Multi-family,Refinancing
+68,Conventional,Multi-family,Refinancing
+69,Conventional,Multi-family,Purchase
+70,Conventional,Single-family,Purchase
+71,Conventional,Multi-family,Refinancing
+72,Conventional,Multi-family,Refinancing
+73,Conventional,Single-family,Refinancing
+74,Federal Housing,Multi-family,Purchase
+75,Federal Housing,Single-family,Purchase
+76,Federal Housing,Multi-family,Purchase
+77,Federal Housing,Single-family,Refinancing
+78,Conventional,Multi-family,Purchase
+79,Federal Housing,Multi-family,Refinancing
+80,Conventional,Multi-family,Purchase
+81,Conventional,Multi-family,Refinancing
+82,Conventional,Single-family,Purchase
+83,Federal Housing,Multi-family,Refinancing
+84,Conventional,Multi-family,Purchase
+85,Conventional,Single-family,Purchase
+86,Federal Housing,Single-family,Purchase
+87,Conventional,Multi-family,Refinancing
+88,Conventional,Single-family,Purchase
+89,Conventional,Single-family,Refinancing
+90,Federal Housing,Multi-family,Purchase
+91,Federal Housing,Single-family,Purchase
+92,Federal Housing,Multi-family,Purchase
+93,Conventional,Single-family,Refinancing
+94,Federal Housing,Single-family,Refinancing
+95,Federal Housing,Multi-family,Purchase
+96,Conventional,Single-family,Purchase
+97,Federal Housing,Single-family,Purchase
+98,Federal Housing,Multi-family,Refinancing
+99,Conventional,Single-family,Refinancing
+100,Conventional,Multi-family,Purchase
+101,Federal Housing,Multi-family,Purchase
+102,Federal Housing,Multi-family,Refinancing
+103,Federal Housing,Single-family,Purchase

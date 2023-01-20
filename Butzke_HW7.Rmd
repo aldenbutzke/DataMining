@@ -1,0 +1,188 @@
+---
+title: "Butzke_HW7"
+author: "Alden Butzke"
+date: "4/11/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+getwd()
+setwd("/users/aldenbutzke/Desktop/Datamining/")
+getwd()
+
+rm(list=ls())
+
+library(tidyverse)
+library(readxl)
+
+Df<-read_xlsx("HWK6 Data.xlsx", sheet = "Wage")
+
+Df.h<-head(Df, 5)
+
+Df.h
+
+```
+## First Model Equation  
+
+$\hat{Y}= \beta_0 + \beta_i + \beta_2 + \beta_n + \epsilon$  
+
+
+$\hat{Wage}= \beta_0 + \beta_1Educ + \beta_2Expert + \beta_3Age + \beta_4Male + \epsilon$  
+
+```{r}
+lm1<-lm(data = Df, Wage~Educ+Exper+Age+Male)
+lm1s<-summary(lm1)
+lm1s
+
+clm1<-coefficients(lm1)
+
+```
+
+The First model is:  
+$\hat{Wage}=$ `r clm1[1]` + $\beta_1 *$ `r clm1[2]` + $\beta_2 *$ `r clm1[3]` + $\beta_3 *$ `r clm1[4]` + $\beta_4 *$ `r clm1[5]` + $\epsilon$  
+with an $\bar{R^2}$ value of `r lm1s$adj.r.squared` and an $R^2$ of `r lm1s$r.squared`.  
+
+This is a fairly good model because the $R^2$ is at 37%, however since it is higher than the $\bar{R^2}$ value, then we can
+make a better model by refining which variables to include. Moreover, only Education (10%), Experience (5%), and Age (5%) are statistically significant which seems odd. Also, the coefficient on age is negative which does not make sense. PErhaps there is multicolinearity between age and experience or OVB on something like race, location, or industry.
+
+```{r}
+hist(Df$Wage, breaks = 20, col = "red")
+boxplot(Df$Wage, col="red")
+```
+
+Perhaps this is due to the presence of outliers in Wage shown by the histogram and boxplot. 
+
+```{r}
+library(gvlma)
+
+gvlma(lm1)
+
+plot(lm1)
+```
+
+However, all of the GVLMA assumptions pass, even though the residuals look biased and the QQs show the data has fatter tails. 
+
+
+```{r}
+wage.forty.M<-(8.6847608 + (10 * 1.2327341) + (5 * 0.4165866) + (40 * -0.0190012) + (1 * 2.2896608))
+wage.forty.W<-8.6847608 + 10*1.2327341 + 5* 0.4165866 + 40* -0.0190012 + 0* 2.2896608
+
+dif<- round(2.2896608, 2)
+```
+
+$\hat{Wage.Forty.Man}=$ `r clm1[1]` + $10*$ `r clm1[2]` + $5*$ `r clm1[3]` + $40*$ `r clm1[4]` + $1*$ `r clm1[5]` + $\epsilon$  
+$\hat{Wage.Forty.Man}=$ `r wage.forty.M` dollars per hour  
+
+
+$\hat{Wage.Forty.Woman}=$ `r clm1[1]` + $10*$ `r clm1[2]` + $5*$ `r clm1[3]` + $40*$ `r clm1[4]` + $0*$ `r clm1[5]` + $\epsilon$  
+$\hat{Wage.Forty.Woman}=$ `r wage.forty.W` dollars per hour  
+
+The Difference in wages per hour between men and women with the same education and experience is, $`r dif` per hour, which is equal to the binary regressor "Male" because when a person is = 1 in "Male", their wages increase by that amount. However, the independent variable "Male" is not statsitically significant so this relationship is tenuous. 
+
+Because the relationships are not staistically clear, this data does not prove any discrimination, but it suggests further investigation would be useful. 
+
+```{r}
+lmEd<-lm(data = Df, Wage~Educ)
+lmeds<-summary(lmEd)
+lmEx<-lm(data = Df, Wage~Exper)
+lmexs<-summary(lmEx)
+lmAg<-lm(data = Df, Wage~Age)
+lmags<-summary(lmAg)
+lmMa<-lm(data = Df, Wage~Male)
+lmmas<-summary(lmMa)
+
+```
+
+| Variable   | Coefficients(intercept, slope) | R squared |
+|------------|--------------------------------|-----------|
+| Education  | 13.06, 1.154                   | 0.177     |
+| Experience | 17.55, 0.3050                  | 0.0844    |
+| Age        | 17.48, 0.0647                  | 0.0105    |
+| Male       | 17.97, 4.863                   | 0.143     |
+
+
+## Picking a model  
+
+Thus, we see that Education is the best model because it has the highest $R^2$ value of 0.177.  
+
+The equation is $\hat{Wage}= \beta_0 + \beta_1Educ$.  
+where, $\beta_0=$ 13.06 and $\beta_1=$ 1.154
+
+Further, $\beta_0$, the intercept, can be interpreted as  $E(\hat{Wage})|X=0$, or the expected mean value of Y when X = 0. So, when education is 0 years, the mean wage is $13.06/hour. Thus, this applies to the other models and when Exper, Age, and Male are = 0, the intercept and expected hourly wage is 17.00 dollars/hr. This shows that when only comparing one regressor at a time, education has the greatest effect on earnings.   
+
+```{r}
+ggplot(Df, aes(Educ, Wage))+ 
+  geom_point()+
+  geom_smooth(method= lm)+
+  labs(title = "Education on Wage")+
+  theme_gray()
+
+```
+The scatterplot with the model is showon above. Below, the residual analysis plots are shown. 
+
+```{r}
+plot(lmEd)
+
+```
+
+
+## Picking a model for multiple regression 
+
+a. $\hat{Wage}= \beta_0 + \beta_1Educ + \beta_2Expert$
+b. $\hat{Wage}= \beta_0 + \beta_1Educ + \beta_2Age$
+c. $\hat{Wage}= \beta_0 + \beta_1Educ + \beta_2Male$
+
+
+```{r}
+lmEE<-lm(data = Df, Wage~Educ+Exper)
+sEE<-summary(lmEE)
+lmEA<-lm(data = Df, Wage~Educ+Age)
+sEA<-summary(lmEA)
+lmEM<-lm(data = Df, Wage~Educ+Male)
+sEM<-summary(lmEM)
+
+```
+
+| Variable     | Coefficients(intercept, slope) | Adjusted R squared |
+|--------------|--------------------------------|--------------------|
+| Educ + Exper | 7.46, 1.44, 0.44               | 0.314              |
+| Educ + Age   | 8.69, 1.20, 0.10               | 0.166              |
+| Educ + Male  | 13.15, 0.89. 3.33              | 0.202              |
+
+
+Thus, we can see that the $\hat{Wage}= \beta_0 + \beta_1Educ + \beta_2Expert$ model is the best with the higest $\bar{R^2}$ of 0.314. The next highest was $\hat{Wage}= \beta_0 + \beta_1Educ + \beta_2Male$ at 0.202. The lowest $\bar{R^2}$ was higher than the highest $R^2$ of the single variable regressions, so each of theese models are better and Education + Experience are the best predictors. 
+
+Moroever, this model is better than the model with all the regressors because its $\bar{R^2}$ is higher (0.314 vs 0.312)
+
+## Picking the final model 
+
+Now, we will compare the final two models: 
+
+1. $\hat{Wage}= \beta_0 + \beta_1Educ + \beta_2Expert+ \beta_3Age$
+2.  $\hat{Wage}= \beta_0 + \beta_1Educ + \beta_2Expert+ \beta_3Male$
+
+```{r}
+lmEEA<-lm(data = Df, Wage~Educ+Exper+Age)
+sEEA<-summary(lmEEA)
+lmEEM<-lm(data = Df, Wage~Educ+Exper+Male)
+sEEM<-summary
+sEEM
+
+
+
+```
+
+| Variable            | Coefficients(intercept, slope) | Adjusted R squared |
+|---------------------|--------------------------------|--------------------|
+| Educ + Exper + Age  | 7.87, 1.44, 0.45 + -0.01       | 0.299              |
+| Educ + Expre + Male | 7.99, 1.24, 0.40 + 2.26        | 0.327              |
+
+
+The $\best$ model is $\hat{Wage}= \beta_0 + \beta_1Educ + \beta_2Expert+ \beta_3Male$ because it has the highest $\bar{R^2}$ compared to all other multiple rgeression and it is also higher than $R^2$ from single regressions. 
+
+However, Male is not a statistically significant regressor, and education, experience, and the intercept are only significant at the 5% level, which limits the credibiity of the model. This potentially because the data is not normally distributed as can be seen from the QQ plot and if outliers were removed or n was increased, the model may be more reliable. 
+

@@ -1,0 +1,286 @@
+---
+title: "Project 2"
+author: "Alden Butzke"
+date: "5/11/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Project 2 data manipulation
+
+```{r}
+library(readxl)
+library(tidyverse)
+library(RColorBrewer)
+setwd("/Users/aldenbutzke/Desktop/Datamining/")
+df<-read_excel("TechSales_Reps.xlsx")
+```
+
+### Dummies 
+
+```{r}
+BC<- df%>% select(2,6)
+
+
+Bus <- ifelse(BC$Business == 'Hardware',0,1)
+Col<- ifelse(BC$College == 'Yes', 1,0)
+
+
+BC<- data.frame(Bus, Col)
+
+```
+
+
+### Creating Dataframe 
+
+```{r}
+
+
+Personality<- df %>% select(7)
+
+## Adding columns 
+
+Personality[ , 'Diplomat']<-NA
+Personality[ , 'Explorer']<- NA
+Personality[ , 'Sentinel']<- NA
+Personality[ , 'Analyst']<- NA
+
+#Creating a df with all personality types and dummy variable 
+Personality$Diplomat<-ifelse(Personality$Personality == "Diplomat", 1,0)
+Personality$Explorer<-ifelse(Personality$Personality == "Explorer", 1,0)
+Personality$Sentinel<-ifelse(Personality$Personality == "Sentinel", 1,0)
+Personality$Analyst<-ifelse(Personality$Personality == "Analyst", 1,0)
+
+```
+
+
+### Data Viz
+
+```{r}
+library(RColorBrewer)
+
+color<-brewer.pal(4, "PRGn")
+
+```
+
+
+
+
+```{r}
+
+color<-brewer.pal(4, "PRGn")
+
+
+```
+
+
+
+```{r}
+
+color2<-brewer.pal(2, "PuRd")
+
+
+```
+
+```{r}
+lg= c("Nonfemale", "Female")
+
+
+
+```
+
+
+#### Using layout due to error from arrangegrid
+
+```{r}
+library(gridExtra)
+library(grid)
+library(gtable)
+#grid.arrange(bp4, ncol=2,nrow=2)
+layout(matrix(c(2,1), ncol=2, nrow = 2))
+barplot(table(df$Female),
+        col= color2,
+        xlab="Female", 
+        ylab="Amount", 
+        main="Frequency of Sales Professionals that are Female",
+        legend= lg
+        )
+barplot(table(df$College),
+        col= color2,
+        xlab="Degrees", 
+        ylab="Amount", 
+        main="Frequency of Sales Professionals Degrees" 
+        )
+barplot(table(df$Personality),
+        col= color,
+        xlab="Personality Type", 
+        ylab="Amount", 
+        main="Barplot of Personality Type" 
+        )
+barplot(table(df$Business),
+        col= color,
+        xlab="Business Type", 
+        ylab="Amount", 
+        main="Barplot of Hardware and Software" 
+        )
+```
+
+
+```{r}
+layout(matrix(c(2,1), ncol=2, nrow = 2))
+
+h1<-hist(df$Years,
+     col= color,
+     main = "Histogram of Years",
+     xlab = "Number of Years Professional has Worked"
+     )
+
+h2<-hist(df$Age,
+     col= color,
+     main = "Histogram of Professional's Age",
+     xlab = "Age"
+     )
+
+h3<-hist(df$Salary,
+     col= color,
+     main = "Histogram of Professional's Salary",
+     xlab = "Salary"
+     )
+
+h4<-hist(df$NPS,
+     col= color,
+     main = "Histogram of Customer Satisfaction",
+     xlab = "Satisfaction Level"
+     )
+
+
+
+
+```
+
+
+### Consolidating data
+
+```{r}
+df$Business<-Bus
+df$College<-Col
+```
+
+
+
+```{r}
+
+
+df<-cbind(df, Personality)
+df<-subset(df, select = -c(7,12))
+
+```
+
+### Correlation
+
+```{r}
+library(corrplot)
+c<-cor(df)
+
+Cor<-corrplot(c, method="circle")
+#c
+#Cor
+
+```
+
+You can tell which values are highly correlated based on how dark blue or dark red they are and how big the dot is. Thus, each value is perfectly correlated to itself and is a big blue dot. The most highly positively correlated data are Certificates & Salary, Certificates & NPS, and NPS & Salary. The most negatively correlated data are diplomat and explorer and surprisingly, salary and female..
+
+### Exporting Data
+
+```{r}
+
+Hardware<-df[df$Business==0,]
+Software<-df[df$Business==1,]
+
+
+write.csv(Hardware, "Hardware.csv")
+write.csv(Software, "Software.csv")
+```
+
+### Clustering
+
+I will look at female and salary across software and hardware groups. 
+
+
+```{r}
+
+library(readxl)
+library(lattice)
+library(caret)
+library(factoextra)
+df1<-df[,-1]
+#fviz_nbclust(df1, kmeans, method='silhouette')
+
+#plot(df1)
+
+ #silhouette_score <- function(k){
+ # km <- kmeans(df1, centers = k, nstart=25)
+ # ss <- silhouette(km$cluster, dist(df1))
+ # mean(ss[, 3])
+#}
+#k <- 1:13
+#avg_sil <- sapply(k, silhouette_score)
+#plot(k, type='b', avg_sil, xlab='Number of clusters', ylab='Average Silhouette Scores', frame=FALSE)
+
+
+
+
+#df$colb1<-ifelse(df$Business==1, "red", "blue")
+#df$colb0<-ifelse(df$Business==0, "red", "blue")
+
+#plot(df$Age,df$Salary)
+
+
+
+
+```
+The most optimal clustering is 2 clusters. 
+
+```{r}
+kmf <- kmeans(df1, 2)
+
+kmf$tot.withinss
+
+## Cluster sizes
+kmf$size
+
+df1$cluster <- kmf$cluster
+head(df1, 6)
+
+```
+The means in the table show the averages from each variable that generate a cutoff for placement in group 1 or 2, hardware or software. This means that an average from Age when cluster == 1 will be the average age for that cluster, and any value that is closer to it than mean(age group 1) + mean(age group 2) / 2 away will be placed in group 1, otherwise it will be placed in group 2. This goes the same for every other variable, and this figure is given in the column means provided when the clustering is either group 1 or 2. When all of these averages are found across each variable, every observation is aggregated and then sorted by the kmeans algorithim and this is how the clustering is created, using means and cutoff points. 
+
+This is also seen by using the coefficients of a regression to find the averages of each variable for each group as well, because the coefficient of each parameter is the average with the rest held constant. 
+
+```{r}
+table(df1$cluster)
+
+df2<-ifelse(df1$cluster==1,colMeans(df1),"")
+df3<-ifelse(df1$cluster==2,colMeans(df1),"")
+
+lm1<-lm(df1$cluster==1~df1$Business+df1$Age+df1$Female+df1$Years+df1$College+df1$Certficates+df1$Salary+df1$Feedback+df1$NPS+df1$Diplomat+df1$Explorer+df1$Sentinel+df1$Analyst)
+lm1s<-summary(lm1)
+lm1s
+lm1
+
+lm2<-lm(df1$cluster==2~df1$Business+df1$Age+df1$Female+df1$Years+df1$College+df1$Certficates+df1$Salary+df1$Feedback+df1$NPS+df1$Diplomat+df1$Explorer+df1$Sentinel+df1$Analyst)
+lm2s<-summary(lm1)
+lm2s
+lm2
+
+#cm<-lm1s$coeffcients
+#cm
+
+cbind(df1,df2)
+cbind(df1,df3)
+
+```
+
+

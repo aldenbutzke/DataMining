@@ -1,0 +1,101 @@
+---
+title: "Outliers"
+author: "Alden Butzke"
+date: "3/3/2022"
+output: powerpoint_presentation
+---
+
+## Outlier Detection
+
+- We have a college data set of 113 small colleges throughout the US.
+- The data consists of:
+  + Name of College
+  + Graduation rate within 4 years
+  + Debt Rate
+  + Earnings after 5 years
+  + Cost after 4 years
+  
+## Brief look at data by using code box
+```{r echo=FALSE}
+College<-read.csv("College.csv", header = TRUE)
+boxplot(College[,c(2,3)],
+        col = c("Chocolate", "Orange"), 
+        horizontal = TRUE, border = "Black", notch = TRUE, 
+        xlab="Money ($)")
+```
+  
+  
+## Outliers Detected in Earnings
+
+- We will use the limits of:
+
+    
+```{r echo=FALSE}
+EarnSummary<-summary(College$Earnings)
+Q1=as.numeric(EarnSummary[2])
+Q3=as.numeric(EarnSummary[5])
+IQR=Q3-Q1
+LL=as.numeric(Q1-(1.5*IQR))
+UL=as.numeric(Q3+(1.5*IQR))
+
+```
+  + Lower limit: $LL=Q_1-1.5*IQR$=`r LL`
+  + Upper Limit: $UL=Q_3+1.5*IQR$=`r UL`
+  
+```{r echo=FALSE}
+Outliers<-College$School[College$Earnings>UL]
+OutEarn<- College$Earnings[College$Earnings>UL]
+Outliers1<-Outliers[1]
+
+```
+
+## Brief View at Graduation and Debt Rates
+
+```{r echo=FALSE}
+College<-read.csv("College.csv", header = TRUE)
+boxplot(College[,c(4,5)],
+        col = c("Chocolate", "Orange"), 
+        horizontal = TRUE, border = "Black", notch = TRUE, 
+        xlab="Percentage Rate %")
+### Debt 
+SD<-summary(College$Deb)
+Q1D<- as.numeric(SD[2])
+Q3D<- as.numeric(SD[5])
+IQRD<-Q3D-Q1D
+LLD<- Q1D-1.5*IQRD
+ULD<- Q3D+1.5*IQRD
+
+OutliersD<- College$School[College$Debt<LLD]
+```
+
+
+## Outliers in Debt Rates
+
+- 4 Outliers found with low debt rates.
+- These outliers are:
+```{r echo=FALSE}
+print(paste0(OutliersD))
+
+```
+
+
+## Outliers in Grad Rates
+- 1 Oulier Detected with a low graduation rate
+```{r echo=FALSE}
+SG<-summary(College$Grad)
+Q1G<-as.numeric(SG[2])
+Q3G<-as.numeric(SG[5])
+IQRG<-Q3G-Q1G
+LLG<-Q1G-1.5*IQRG
+
+OutliersG<-College$School[College$Grad<LLG]
+
+```
+
+- The Outlier is:
+```{r echo=FALSE}
+print(paste0(OutliersG))
+```
+
+---
+

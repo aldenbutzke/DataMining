@@ -1,0 +1,25 @@
+---
+title: "Clustering"
+author: "Alden Butzke"
+date: "4/14/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE}
+getwd()
+setwd("/Users/aldenbutzke/Desktop/Datamining/")
+getwd()
+
+library(readxl)
+rm(list=ls())
+```
+
+### LDA Linear Discriminant Analysis 
+
+- 1908 Mahalanobis 
+

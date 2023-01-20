@@ -1,0 +1,130 @@
+---
+title: "Choosing.Rgeression.Model"
+author: "Alden Butzke"
+date: "4/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Choosing Regression Model
+
+```{r}
+getwd()
+setwd("/Users/aldenbutzke/Desktop/Datamining")
+rm(list=ls())
+```
+
+
+**Preliminaries**
+newline in RMD = two spaces then enter.  
+
+We will load the data first.
+
+#### Read in Data:
+To create a new code chunk, we can do two things,  
+1) hit Ctrl+Alt+i  
+2) hit apple button + cmmnd + i
+```{r}
+College<-read.csv("College.csv", header = T)
+### visualize all numerical data, can use pairs 
+pairs(College[2:6])
+```
+
+### Choosing the best model
+It is not an optimum, it is the best we can find given the data (historical data)
+
+*Two main facts*  
+
+1. $R^2$ always increases as you add more variables to the model  
+
+2. When a model has more than two variables, you must use Adjusted$R^2$  
+
+**Check Simple Relationships**  
+You are going to develop linear models for each variable vs dependent
+Our Y is Earnings.  
+
+1. Earnings versus Cost: $\hat{y}=\beta_0+\beta_1*x_1$  
+2. Earnings versus Grad Rates:  $\hat{y}=\beta_0+\beta_1*x_2$ 
+3. Earnings versus Debt:  $\hat{y}=\beta_0+\beta_1*x_3$ 
+4. Earnings versus City:  $\hat{y}=\beta_0+\beta_1*x_4$ 
+
+```{r}
+## run simple regression models 
+#attach(College)
+#detach(College) # not working
+lm1<- lm(College$Earnings~College$Cost)
+lm2<- lm(College$Earnings~College$Grad)
+lm3<- lm(College$Earnings~College$Debt)
+lm4<- lm(College$Earnings~College$City)
+
+s1<-summary(lm1)
+s2<-summary(lm2)
+s3<-summary(lm3)
+s4<-summary(lm4)
+
+```
+
+How to pull info from the coe into text:  
+
+1. Model 1, $x_1$ = Cost, the $R^2$ value is, `r s1$r.squared`
+2. Model 2, $x_2$ = Grad, the $R^2$ value is, `r s2$r.squared`
+3. Model 3, $x_3$ = Debt, the $R^2$ value is, `r s3$r.squared`
+4. Model 4, $x_4$ = City, the $R^2$ value is, `r s4$r.squared`  
+
+The most explanatory variable to explain the variation in Y~Earnings is Graduation Rates  
+
+```{r}
+int2<-round(s2$coefficients[1], 2)
+sl2<-round(s2$coefficients[2], 2)
+```
+
+Given by the model, $\hat{y_i}=$$`r int2`+`r sl2`$$*Grad$ with an $R^2=$ `r s2$r.squared`. 
+
+now we check 2 variable relationships 
+```{r}
+lm21<-lm(data = College, Earnings~Grad+Cost)
+s21<-summary(lm21)
+lm22<-lm(data = College, Earnings~Grad+Debt)
+s22<-summary(lm22)
+lm23<-lm(data = College, Earnings~Grad+City)
+s23<-summary(lm23)
+```
+
+
+The adjusted R squared are:  
+
+1. `r round(s21$adj.r.squared, 3)`  
+2. `r round(s22$adj.r.squared, 3)`  
+3. `r round(s23$adj.r.squared, 3)`  
+
+```{r}
+#The best model so far is model 1, $y_i=$ `r round(s21$coefficients[1], 2)` + `r round(`
+lm21
+
+```
+
+```{r}
+lm221<-lm(data = College, Earnings~Grad+Cost+Debt)
+s221<-summary(lm221)
+lm232<-lm(data = College, Earnings~Grad+Cost+City)
+s232<-summary(lm232)
+```
+
+1. `r round(s221$adj.r.squared, 3)`  
+2. `r round(s232$adj.r.squared, 3)` 
+
+
+```{r}
+## run a model with all data 
+
+df<-College[2:6]
+All<-lm(data=df, Earnings~.)
+All
+all.s<-summary(All)
+```
+
+1. `r round(all.s$adj.r.squared, 3)`  
+

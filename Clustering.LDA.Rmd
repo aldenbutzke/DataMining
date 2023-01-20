@@ -1,0 +1,181 @@
+---
+title: "Clustering"
+author: "Alden Butzke"
+date: "4/14/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r echo=FALSE}
+setwd("/Users/aldenbutzke/Desktop/Datamining/")
+
+library(readxl)
+rm(list=ls())
+```
+
+### LDA Linear Discriminant Analysis 
+
+- 1908 Mahalanobis  
+
+Special form of linear regression:  
+y is going to be categorcial and the $X_i$ are still numerical or mixed: they can be nominal, numerical, interval, and integers. "Logistic Regression" (covered in business analytics)bMost common application in business is in forensic accounting.
+
+
+```{r}
+Emp<-read.csv("EmployeeReview.csv", header = T)
+head(Emp)
+tail(Emp)
+```
+
+
+These are new emp testing scores. Prospective employees must take a verbal and mechanical aptitude test prior to emp and onboarding.  
+
+### Visualizing the data 
+
+We need to use the group as a color seperator
+
+```{r}
+Emp$Col<-ifelse(Emp$Group==1, "red", "blue")
+```
+
+
+```{r echo=FALSE}
+library(tidyverse)
+
+ggplot(Emp, aes(Verbal, Mechanical, col=Col))+
+  geom_point(alpha=2, pch=19)+
+  labs(title = "Verbal and Mechanical Test Scores", x="Mechanical", y="Verbal")+
+  theme_gray()
+  
+
+
+```
+
+Center of Grvaity is a dot in the middle of all of the blue points, or the red points. Find the "Clusterhead" by analyzing the means. Used IRL to place cell phone towers.  
+
+Thus, we must analyze the means of both groups on each variable that will be usd to predict the group. 
+
+$Y$ can be 1 or 2. 
+$X_1$ can be mechanical 
+$X_2$ can be verbal  
+
+The prediciton model: 
+
+$Y=\beta_0 + \beta_1 X_1 + \beta_2 X_2$  
+
+We need to understand the Clusterheads which are the mean points of each group. There are two methods. The first is dumb but always works. The second is more sohpisticated.  
+
+```{r}
+
+### this is the cluster of the red group below, or blue group above
+x1M<- mean(Emp$Mechanical[Emp$Group==1])
+
+x1V<-mean(Emp$Verbal[Emp$Group==1])
+```
+
+tapply() will calculate means or sums or anything according to a group or category 
+
+```{r}
+## compute the means for each group Mechanical 
+
+MechMeans<-tapply(Emp$Mechanical, # what column 
+                  
+                  Emp$Group, # how to group 
+                  
+                  mean #function to apply
+                  
+                  )
+
+VerbMeans<-tapply(Emp$Verbal, Emp$Group, mean)
+
+
+Clusterheads<-data.frame(Group=c(1,2), Mechanical=MechMeans, Verbal=VerbMeans)
+```
+
+
+
+```{r echo=FALSE}
+plot(Emp$Verbal~Emp$Mechanical,
+     main="Verbal and Mechnical Test Scores",
+     col=Emp$Col, 
+     xlab="Mechanical",
+     ylab = "Verbal", 
+     pch=19
+     )
+points(VerbMeans~MechMeans, pch="+", col=c("red", "blue"), cex=3)
+```
+### LDA 
+
+The Output is called the discrinimant score. 
+
+Our model is as follows:  
+
+$Group =\beta_0 + \beta_1 X_1 + \beta_2 X_2$  
+
+```{r}
+
+LDA<-lm(Group~Mechanical+Verbal, data = Emp)
+sLDA<-summary(LDA)
+sLDA
+
+#### creating a column of predicted values and adding to df
+### this column is calle dthe discriminant score 
+
+Emp$Pred.Y<-5.37035-0.07911*Emp$Mechanical-0.02720*Emp$Verbal
+## this way could be improved 
+
+### generate P(y) for our LDA model 
+
+PredM<-predict(LDA, newdata = Clusterheads)
+Clusterheads$PredM<-PredM
+
+#### the columns must be named the same in order to use predict
+
+
+```
+
+```{r}
+hist(Emp$Pred.Y)
+```
+
+Clustering is a fancy way of saying segmentation 
+
+You need a rule. In this case, the rule is called the "cut-off" 
+
+It's an if statement 
+
+if(discriminant score is less than the cut off, you're group ome, otherwise group 2)
+
+```{r}
+cutoff<-mean(PredM)
+cutoff
+
+```
+
+If our P(Y) is <= cutoff, group 1, otherwise group 2
+
+```{r}
+Emp$Predicted.Final<-ifelse(Emp$Pred.Y<=cutoff,1,2)
+
+
+```
+
+
+### Confusion Matrix 
+
+```{r}
+out<-table(Emp$Group, Emp$Predicted.Final)
+out
+```
+
+```{r}
+library(lattice)
+library(caret)
+
+confusionMatrix(out)
+```
+

@@ -1,0 +1,68 @@
+---
+title: "Butzke_HW8"
+author: "Alden Butzke"
+date: "4/19/2022"
+output: html_document
+---
+
+
+### Linear Regression 2
+
+Loading in the data and adding dummy variables based on quarter in order to estimate the following equation:  
+
+$\hat{y}=β_0+β_1 x+β_2 d_1+β_3 d_2+β_4 d_3+ϵ $
+
+where $d_i$ variables are dummy variables for the quarters. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+getwd()
+setwd("/Users/aldenbutzke/Desktop/Datamining/")
+getwd()
+
+rm(list=ls())
+
+library(readxl)
+library(tidyverse)
+
+x<-read_excel("Retail.xlsx")
+head(x)
+library(fastDummies)
+x<-dummy_cols(x, select_columns = "Quarter")
+head(x)
+
+```
+### Creating a linear model 
+
+```{r}
+mod1<-lm(data = x, `Retail Sales`~GNP + Quarter_1 + Quarter_2 + Quarter_3 )
+ms<-summary(mod1)
+c1<-round(coefficients(mod1),2)
+
+print(paste0("The Equation is, y=", c1[1],"B0 ", "+", c1[2],"B1 ", "+", c1[3],"B2 ", "+", c1[4],"B3 ", "+", c1[5],"B4 "))
+
+Q2_predict<- 263995.074443642+ 13000*53.133109960926-0*98646.0803104984-26350.6178189479-0*38084.9289368957
+
+Q4_predict<- 263995.074443642+ 13000*53.133109960926-0*98646.0803104984-0*26350.6178189479-0*38084.9289368957
+
+```
+
+The predicted retail sales in Q2 with GNP = 13,000 billion are $`r Q2_predict` billion 
+
+The predicted retail sales in Q4 with GNP = 13,000 billion are $`r Q4_predict` billion 
+
+### Hypothesis Testing 
+
+Testing the following hypothesis to determine whether Q1-3 = Q4  
+
+H_0:β_0=0 vs H_A:β_0≠0
+
+We will test this with $ \alpha $ = 0.05, the 5% significance level. 
+
+```{r}
+p<-ms$coefficients[1,4]
+```
+
+we find that `r p` < $ \alpha $ = 0.05, thus we can reject the null that β_0=0. 

@@ -1,0 +1,20 @@
+---
+title: "Analysis of Colleges"
+output: html_notebook
+---
+
+### *Graduation versus Debt Rates*
+
+
+```{r echo = False}
+college<-read.csv("College.csv", header = TRUE)
+
+p2<-boxplot(college[, c("Debt", "Grad")], ### pulls the data, creates two box plots on same graph 
+        main = "Box-plot of Graduation and Debt",  ### main label 
+        col = c("steelblue2", "orange"), #colors of each plot
+        horizontal = T, # turns them sideways 
+        border = "brown", #this colors border of plot
+        notch = T, # we want a notched box
+        xlab = "Rate in %")
+```
+

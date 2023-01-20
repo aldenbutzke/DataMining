@@ -1,0 +1,117 @@
+School,Earnings,Cost,Grad,Debt,City
+St. Ambrose C (NC),44800,22920,62,88,1
+"Albion College (Albion, MI)",45100,23429,73,92,0
+"Alfred University (Alfred, NY)",42300,19567,63,87,0
+"Allegheny College (Meadville, PA)",49200,25147,78,92,0
+"Beloit College (Beloit, WI)",37900,21979,78,93,1
+"Bentley University (Waltham, MA)",74900,29886,86,98,1
+"Boston University (Boston, MA)",60600,34603,84,95,1
+"California Lutheran University (Thousand Oaks, CA)",52900,28107,65,90,1
+"Carroll College (Helena, MT)",44000,23583,65,95,0
+"Catholic University of America (Washington, DC)",54500,34086,68,92,1
+"Cedar Crest College (Allentown, PA)",45200,19156,61,83,1
+"Champlain College (Burlington, VT)",40400,31564,62,89,1
+"Chapman University (Orange, CA)",51800,33821,74,87,1
+"Clark University (Worcester, MA)",44100,23415,80,94,1
+"Colby–Sawyer College (New London, NH)",38600,22644,56,88,0
+"College of Mount St. Vincent (Riverdale, NY)",51900,19647,54,85,1
+"College of St. Benedict (St. Joseph, MN)",47600,23518,81,98,0
+"Davis & Elkins College (Elkins, WV)",35900,16575,43,71,0
+"DeSales University (Center Valley, PA)",48300,27080,69,90,0
+"Dickinson College (Carlisle, PA)",52100,29678,85,95,1
+"Doane College (Crete, NE)",42300,21713,62,90,0
+"Dominican University (River Forest, IL)",44400,13902,65,86,0
+"Drew University (Madison, NJ)",50900,27652,69,93,0
+"Drexel University (Philadelphia, PA)",61100,33742,67,90,1
+"Earlham College (Richmond, IN)",32300,19414,71,96,0
+"Eckerd College (St. Petersburg, FL)",40800,29864,63,81,1
+"Elmhurst College (Elmhurst, IL)",48100,19466,74,91,0
+"Elmira College (Elmira, NY)",43600,22787,60,89,1
+"Elon University (Elon, NC)",44500,31898,83,96,0
+"Endicott College (Beverly, MA)",42800,31810,72,96,0
+"Florida Southern College (Lakeland, FL)",37600,21558,57,82,1
+"Fort Lewis College (Durango, CO)",34000,14398,37,77,0
+"Franklin Pierce University (Rindge, NH)",38000,24266,47,88,0
+"Fresno Pacific University (Fresno, CA)",39700,15403,57,81,1
+"George Fox University (Newberg, OR)",43300,24402,63,92,0
+"Gonzaga University (Spokane, WA)",52800,28155,82,95,1
+"Goucher College (Baltimore, MD)",45500,24246,67,91,1
+"Gustavus Adolphus College (St. Peter, MN)",50100,23162,83,95,0
+"Hawaii Pacific University (Honolulu, HI)",43400,20967,40,87,1
+"Hendrix College (Conway, AR)",40500,22231,71,87,1
+"Hobart and William Smith Colleges (Geneva, NY)",48600,30720,78,95,0
+"Hollins University (Roanoke, VA)",37000,20252,58,80,0
+"Ithaca College (Ithaca, NY)",50400,31958,76,96,0
+"Johnson & Wales University at Denver (Denver, CO)",35100,24423,54,80,1
+"Juniata College (Huntingdon, PA)",45200,24614,75,96,0
+"Kalamazoo College (Kalamazoo, MI)",49400,21531,79,93,1
+"Lake Forest College (Lake Forest, IL)",48100,23921,67,93,0
+"Lasell College (Newton, MA)",40900,25316,49,88,1
+"Lesley University (Cambridge, MA)",36700,32534,46,86,1
+"Lewis and Clark College (Portland, OR)",43400,32636,75,96,1
+"Linfield College (McMinnville, OR)",51300,24893,68,93,0
+"Long Island University — C.W. Post Campus (Brookville, NY)",46000,25613,41,74,0
+"Loyola University New Orleans (New Orleans, LA)",41300,21546,57,83,1
+"Lycoming College (Williamsport, PA)",42800,21127,64,90,1
+"Lynn University (Boca Raton, FL)",35500,33074,41,76,1
+"Marietta College (Marietta, OH)",42600,22473,59,89,0
+"McDaniel College (Westminster, MD)",44600,20675,73,95,0
+"Menlo College (Atherton, CA)",50600,25918,38,78,0
+"Meredith College (Raleigh, NC)",38400,22275,61,87,1
+"Mills College (Oakland, CA)",39000,25539,62,81,1
+"Monmouth College (Monmouth, IL)",40700,15685,58,89,0
+"Moravian College (Bethlehem, PA)",50000,24730,74,91,1
+"Nazareth College of Rochester (Rochester, NY)",43900,25936,70,93,0
+"Nebraska Wesleyan University (Lincoln, NE)",45500,22204,67,93,1
+"New England College (Henniker, NH)",35600,28458,41,78,0
+"Niagara University (Niagara University, NY)",44000,17437,66,87,0
+"Oglethorpe University (Atlanta, GA)",43900,19721,59,79,0
+"Otterbein University (Westerville, OH)",41200,24850,59,86,0
+"Pace University (New York, NY)",58400,24961,53,86,1
+"Pacific Lutheran University (Tacoma, WA)",45900,23486,70,93,0
+"Pine Manor College (Chestnut Hill, MA)",34700,13735,32,52,0
+"Providence College (Providence, RI)",59600,34841,86,96,1
+"Quinnipiac University (Hamden, CT)",56400,35159,76,96,0
+"Regis University (Denver, CO)",53100,21046,58,85,1
+"Rhode Island College (Providence, RI)",39600,9938,43,84,0
+"Rider University (Lawrenceville, NJ)",48100,28210,67,89,0
+"Ripon College (Ripon, WI)",42800,19254,73,90,0
+"Roanoke College (Salem, VA)",42500,26451,65,89,0
+"Roger Williams University (Bristol, RI)",47200,33838,62,93,0
+"Rollins College (Winter Park, FL)",42200,29427,69,83,0
+"Saint Francis University (Loretto, PA)",46900,22593,68,90,0
+"Seattle University (Seattle, WA)",55200,33557,77,92,1
+"Simmons College (Boston, MA)",51400,29085,69,93,1
+"Spelman College (Atlanta, GA)",46400,31293,70,67,1
+"Springfield College (Springfield, MA)",45100,27674,67,80,1
+"Stetson University Ideland, FL)",42600,21815,64,86,0
+"Suffolk University (Boston, MA)",49900,27507,56,84,1
+"Susquehanna University (Selinsgrove, PA)",50000,24954,75,95,0
+"Syracuse University (Syracuse, NY)",56600,28912,81,93,1
+"Temple University (Philadelphia, PA)",46500,20845,66,86,1
+"The College of Idaho (Caldwell, ID)",38900,16681,65,90,0
+"The College of Wooster (Wooster, OH)",44400,21455,75,91,0
+"The George Washington University (Washington, DC)",64500,30206,80,95,1
+"The University of Tulsa (Tulsa, OK)",43200,25702,67,87,1
+"Trinity University (San Antonio, TX)",53200,22389,81,96,1
+"University of Denver (Denver, CO)",51400,29362,77,92,1
+"University of Hartford (West Hartford, CT)",45900,29140,55,86,1
+"University of Miami (Coral Gables, FL)",52400,30394,81,90,0
+"University of Puget Sound (Tacoma, WA)",51500,32115,78,94,1
+"University of Redlands (Redlands, CA)",53800,25057,72,91,1
+"University of Rochester (Rochester, NY)",55500,26608,85,93,1
+"University of San Diego (San Diego, CA)",56300,31593,75,92,1
+"University of San Francisco (San Francisco, CA)",61000,31915,68,87,1
+"University of Tampa (Tampa, FL)",44400,27955,59,87,1
+"University of the Pacific (Stockton, CA)",66400,30318,57,89,1
+"Wartburg College (Waverly, IA)",43200,22124,64,90,0
+"Washington & Jefferson College (Washington, PA)",49900,26491,76,93,0
+"Washington College (Chestertown, MD)",48300,30255,69,92,0
+"Wells College (Aurora, NY)",33600,19739,57,86,0
+"West Virginia Wesleyan College (Buckhannon, WV)",43100,18292,59,82,0
+"Western New England University (Springfield, MA)",55100,28517,61,92,1
+"Whittier College (Whittier, CA)",45100,33181,67,86,0
+"Widener University (Chester, PA)",51700,27387,56,83,0
+"Willamette University (Salem, OR)",49200,30312,78,93,1
+"Winthrop University (Rock Hill, SC)",36100,15311,54,76,1
+"Wittenberg University (Springfield, OH)",42700,26616,64,90,1

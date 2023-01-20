@@ -1,0 +1,124 @@
+---
+title: "Histogram and Density Plots"
+author: "Alden Butzke"
+date: "3/8/2022"
+output: html_document
+---
+
+### Histograms and Density Plots 
+
+headers are defined by the number of hashtags or pound symbols 
+
+ctrl+alt+i will create a new code block 
+```{r}
+rm(list=ls())
+College<-read.csv("College.csv", header = TRUE)
+#min for cost and earnings columns 
+lowest<-min(College[,2:3])
+highest<-max(College[,2:3])
+
+
+
+```
+
+lowest is `r lowest` 
+
+```{r}
+p1<-hist(College$Earnings,  #plot earnings 
+         breaks = 20, #will generate 20 bins 
+         col = rgb(1,0,0,1/2)
+         )
+
+p2<-hist(College$Cost, breaks = 10, col = rgb(0,1,0,1/4))
+```
+
+```{r}
+plot(p1, 
+     col = rgb(0,0,1,1/4), 
+     xlim=c(9000,75000),
+     main = "Histograms of Earnings and Cost", 
+     xlab = "Dollars ($)")
+
+plot(p2, col = rgb(1,0,0,1/4), 
+     xlim = c(9000,75000), add = TRUE
+     
+     
+     
+     )
+
+
+
+
+
+
+```
+
+can run chi squred, duncan difference, regression, or one other test to see if data is normal 
+
+### Density Block
+
+1. all probability p(X) for each variable is a number between 0 and 1 
+2. all probability p(X) added together results in 1 
+
+```{r}
+d1<-density(College$Grad)
+d2<-density(College$Debt)
+
+plot(d1,
+     xlim=(c(20,100)),
+     ylim=(c(0,.09)),
+     lty="longdash",
+     lwd=2,
+     col="blue4",
+     main = "Density plots of Grad and Debt Rates"
+     )
+lines(d2, col="red", lwd=1.5, lty="twodash")
+legend(20,.06, #location of legend
+       legend = c("Grad_Rate", "Debt-Rate"), #labels for legend 
+       col = c("blue4", "red"),
+       lty = c("longdash", "twodash")
+       )
+```
+
+### Standardization
+
+z-score is the most common method used to standardize. $z_i=\frac{x_i-\mu}{\sigma}$
+
+
+```{r}
+
+###  z-score is the most common method used to standardize. $z_i=\frac{x_i-\mu}{\sigma}$
+
+#### logs linearize data that is sepeerated by multiple orders of magnitude 
+
+m<-mean(College$Debt) #mean
+stdd<-sd(College$Debt) #calc sd 
+newDebt<-((College$Debt-m)/stdd)
+
+hist(newDebt, breaks = 10, xlim= c(-6,6), col = "blue4", main = "Histograms using a manual Z score")
+
+#### There is a function for standardization called scale 
+stdGrad<-scale(College$Grad, center=TRUE, scale = TRUE)
+hist(stdGrad, breaks = 10, xlim= c(-6,6), col = "blue4", main = "Histograms using scale")
+
+```
+ 
+
+```{r}
+d1<-density(scale(College$Debt))
+d2<-density(scale(College$Grad))
+plot(d1, xlim=c(-6,6), ylim=c(0,0.5), col="blue4", lty="longdash")
+lines(d2, col="red", lty="twodash") 
+legend(-6,.5,legend = c("Debt", "Grad"), col = c("blue4", "red"), lty = c("longdash", "twodash"))
+
+boxplot(College[,4:5])
+
+
+```
+
+### Dirty Data
+
+```{r}
+pairs(College[,2:5])
+```
+

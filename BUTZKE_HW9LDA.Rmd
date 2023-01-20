@@ -1,0 +1,116 @@
+---
+title: "Butzke_HWK_LDA_9"
+author: "Alden Butzke"
+date: "5/2/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Linear Discriminant Analysis 
+
+We will analyze loans to determine whether they should be approved or rejected based on  
+1.liquidity,  
+2.profitability,  
+3.activity.  
+Thus, we will develop a rule through LDA that will sort loan applications into accept groups and reject groups with corresponding clusterheads. 
+
+
+```{r}
+setwd("/Users/aldenbutzke/Desktop/Datamining/")
+library(readxl)
+library(lattice)
+library(caret)
+rm(list=ls())
+
+df<-read.csv("Loans.csv", header = T)
+```
+
+
+```{r}
+df$col<-ifelse(df$Category==1, "red", "blue")
+
+x1L<- mean(df$Liquidity[df$Category==1])
+
+x1P<-mean(df$Profitability[df$Category==1])
+
+x1A<-mean(df$Activity[df$Category==1])
+
+```
+
+```{r}
+LiqMeans<-tapply(df$Liquidity, # what column 
+                  
+                  df$Category, # how to group 
+                  
+                  mean #function to apply
+                  
+                  )
+
+ProfMeans<-tapply(df$Profitability, df$Category, mean)
+
+ActMeans<-tapply(df$Activity, df$Category, mean)
+
+Clusterheads<-data.frame(Group=c(1,2), Liquidity=LiqMeans, Profitability=ProfMeans, Activity=ActMeans)
+
+```
+
+
+$Group =\beta_0 + \beta_1 X_1 + \beta_2 X_2+ \beta_3 X_3$ 
+
+```{r}
+LDA<-lm(Category~Liquidity+Profitability+Activity, data = df)
+sLDA<-summary(LDA)
+sLDA
+```
+
+```{r}
+df$Predict<-4.3071 - 2.8554*df$Liquidity - 0.9880*df$Profitability - 0.2540*df$Activity
+
+PredM<-predict(LDA, newdata = Clusterheads)
+Clusterheads$PredM<-PredM
+hist(df$Predict, breaks = 50)
+```
+  
+### The Model 
+
+The clusterhead for group 1 is 1.26 and the clusterhead for group 2 is 1.74. 
+
+The Cutoff is 1.5. 
+```{r}
+cutoff<-mean(PredM)
+cutoff
+df$Predict.Final<-ifelse(df$Predict<=cutoff,1,2)
+```
+```{r}
+out<-table(df$Category, df$Predict.Final)
+out
+confusionMatrix(out)
+
+```
+
+### Accuracy  
+
+
+The model is 81.63% accurate. The accuracy was sourced by generating a confusion matrix from the LDA sorting of predicted groups by clusterheads on profitability, activity, and liquidity.  
+
+```{r}
+new.data<-readxl::read_xlsx("New.Data.xlsx")
+
+
+
+new.data$Predict<-4.3071 - 2.8554*new.data$Liquidity - 0.9880*new.data$Profitability - 0.2540*new.data$Activity
+
+new.data$Predict.Final<-ifelse(new.data$Predict<=cutoff,1,2)
+
+new.data
+
+```
+
+### New Data
+
+You should accept A and B and reject C, D and E because our model predicts with near 80% accuracy that A and B closely fit in with group 1 and C, D and E closely fit with group 2
+

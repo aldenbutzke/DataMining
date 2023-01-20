@@ -1,0 +1,210 @@
+---
+title: "Butzke_ICE2"
+author: "Alden Butzke"
+date: "5/3/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("/Users/aldenbutzke/Desktop/Datamining/")
+library(readxl)
+library(lattice)
+library(tidyverse)
+library(caret)
+rm(list=ls())
+
+```
+
+```{r}
+df<-read.csv("StoreMixUp.csv", header = T)
+Index<-c(1:length((df$Pofits_100s)))
+df$Index<-Index
+df1<-data.frame(df$Num_Sales, df$Pofits_100s, df$Index)
+plot(df$Num_Sales, df$Pofits_100s)
+#plot(df1$Num_Sales,df1$Pofits_100s)
+#x<-is.na(df1$df.Num_Sales)
+#sum(x)
+            
+            
+
+```
+
+### Group analysis 
+
+There is clear evidence for multiple groups because there are visually obvious clusters with distinct proft to number of sales ratios. There are at least 6 visually obvious groups. 
+
+```{r}
+hist(df$Pofits_100s, breaks = 200)
+hist(df$Num_Sales, breaks = 200)
+```
+
+The histograms are multi-modal, there is further evidence of multiple groups. 
+
+```{r}
+library(cluster)
+library(factoextra)
+library(FactoMineR)
+library(fBasics)
+```
+
+```{r}
+
+NAdf <- is.na.data.frame(df1)
+any(NAdf)
+set.seed(27500)
+k<-kmeans(df1[,c(1,2)], centers=6, nstart = 10)
+df$k<-k$cluster
+df1$k<-k$cluster
+
+
+
+
+ggplot(df1, aes(df.Num_Sales, df.Pofits_100s))+
+  geom_point(aes(col=k))
+
+```
+###  Problems 
+
+The outliers of each group are being miscategorized. Thus, I will create a boxplot for each group in order to house each observation with its actual group.  
+
+```{r}
+#g1<- boxplot(df$Pofits_100s[df$k==1], 
+            # horizontal = T)
+#g1
+
+fviz_cluster(k, geom = "point", data = df)
+```
+
+We can see clearly that the data has been better fitted through a process of trial and error to accurately group the observations with a new algorithim. 
+
+
+```{r}
+df$Col<-ifelse(df$k == 1, "black",
+  ifelse(df$k == 2, "red", 
+   ifelse(df$k == 3, "green",
+    ifelse(df$k == 4, "blue",
+     ifelse(df$k == 5, "lightblue", "purple")))))
+
+ggplot(df, aes(Num_Sales, Pofits_100s))+
+  geom_point(aes(col=Col))
+
+B1<-df[df$k==1,]
+R2<-df[df$k==2,]
+G3<-df[df$k==3,]
+B4<- df[df$k==4,]
+LB5<- df[df$k==5,]
+P6<-df[df$k==6,]
+
+boxplot(df$Pofits_100s~df$k,
+        main= "Clusters and Profit",
+        col= df$Col,
+        ylab= "Profits",
+        xlab = "Cluster")
+
+  boxplot(df$Num_Sales~df$k,
+        main= "Clusters and Profit",
+        col= df$Col,
+        ylab= "Sales",
+        xlab = "Cluster")
+
+```
+```{r}
+P1<-plot(df$Pofits_100s[df$k==1]~df$Num_Sales[df$k==1], 
+             main= "Black 1",
+             col= "black")
+
+P2<-plot(df$Pofits_100s[df$k==2]~df$Num_Sales[df$k==2], 
+           main= "Red 2",
+           col= "red")
+
+P3<-plot(df$Pofits_100s[df$k==3]~df$Num_Sales[df$k==3],
+             main = "Green 3",
+             col= "green"
+             )
+
+P4<-plot(df$Pofits_100s[df$k==4]~df$Num_Sales[df$k==4],
+             main = "Blue 4",
+             col= "blue"
+             )
+P5<-plot(df$Pofits_100s[df$k==5]~df$Num_Sales[df$k==5],
+             main = "Light Blue 5",
+             col= "light blue"
+             )
+P6<- plot(df$Pofits_100s[df$k==6]~df$Num_Sales[df$k==6],
+             main = "Purple 6",
+             col= "purple"
+             )
+```
+
+```{r}
+B1O<-B1[B1$Num_Sales>500,]
+B1<-B1[B1$Num_Sales<500,]
+
+Cluster1<- rbind(R2, B1O) 
+
+R2O<-R2[R2$Pofits_100s>300,]
+R2<-R2[R2$Pofits_100s<300,] 
+
+Cluster2<- rbind(R2, R2O) 
+
+G3O<-G3[G3$Num_Sales>130,]
+G3<-G3[G3$Num_Sales<130,] 
+
+Cluster3<- rbind(B1O, G3O) 
+
+
+B4O<-B4[B4$Pofits_100s>120,]
+B4<-B4[B4$Pofits_100s<120,] 
+
+Cluster4<- rbind(G3, B4O)
+
+LB5O<-LB5[LB5$Num_Sales<50,]
+LB5<-LB5[LB5$Num_Sales>50,] 
+
+Cluster5<- rbind(G3, LB5O)
+
+P6O<-P6[P6$Pofits_100s>350,]
+P6<-P6[P6$Pofits_100s<350,]
+
+
+Cluster6<- rbind(P6, R2O)
+
+fdf<-rbind(Cluster1,Cluster2,Cluster3,Cluster4,Cluster5,Cluster6)
+
+plot(fdf$Pofits_100s~fdf$Num_Sales, col= fdf$Col, ylab ="Profit (100s)", xlab= "Number of Sales")
+```
+The groups have been sorted into discrete bunches and though it isn't perfect, it is a big improvement. I graphed each group and looked for clear outliers and eyeballed where those breaks occured. I could have been more precise by calculating mathmatical outliers using boxplots and reassinging colors automatically. However, the data had clear visual splits. 
+
+```{r}
+mb1<-mean(B1$Pofits_100s)
+mr2<-mean(R2$Pofits_100s)
+mg3<-mean(G3$Pofits_100s)
+mb4<-mean(B4$Pofits_100s)
+mlb5<-mean(LB5$Pofits_100s)
+mp6<-mean(P6$Pofits_100s)
+
+
+mdf<-data.frame(mb1,mr2,mg3,mb4,mlb5,mp6)
+#plot(mdf)
+
+plot(c(mb1, mr2, mg3, mb4, mlb5, mp6), xlab="groups", ylab="profit means")
+
+
+mb1<-mean(B1$Num_Sales)
+mr2<-mean(R2$Num_Sales)
+mg3<-mean(G3$Num_Sales)
+mb4<-mean(B4$Num_Sales)
+mlb5<-mean(LB5$Num_Sales)
+mp6<-mean(P6$Num_Sales)
+
+
+mdf<-data.frame(mb1,mr2,mg3,mb4,mlb5,mp6)
+
+plot(c(mb1, mr2, mg3, mb4, mlb5, mp6), xlab="groups", ylab="Sales Num Means")
+#xplot(mdf)
+```
+This project nearly killed me and I wish I was in class when we went over it, but I want to learn a lot more about k means and unsurpervised learning. 
